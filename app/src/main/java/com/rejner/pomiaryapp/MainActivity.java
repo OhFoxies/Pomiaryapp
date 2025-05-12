@@ -65,14 +65,16 @@ public class MainActivity extends AppCompatActivity {
                 null,                   // don't filter by row groups
                 sortOrder               // The sort order
         );
-        List itemIds = new ArrayList<>();
+
+        List<String> itemNames = new ArrayList<>();
         while(cursor.moveToNext()) {
-            long itemId = cursor.getLong(
-                    cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_SUBTITLE));
-            itemIds.add(itemId);
+            String itemName = cursor.getString(
+                    cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_TITLE));
+            itemNames.add(itemName);
         }
         cursor.close();
+
         TextView text = findViewById(R.id.test);
-        text.setText(itemIds.get(0).toString());
+        text.setText(itemNames.get(0));
     }
 }
