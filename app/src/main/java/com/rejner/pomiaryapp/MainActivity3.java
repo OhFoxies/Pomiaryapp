@@ -45,7 +45,14 @@ public class MainActivity3 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main3);
         DatabaseController dbHelper = new DatabaseController(this);
-        ImageView imageView = findViewById(R.id.image_view);
+        ImageView imageView = findViewById(R.id.image_view);// miejsce wyświetlania zdjęcia
+        Button captureButton = findViewById(R.id.capture_button); // włącza aparat i robisz zdjęcie
+        captureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
         int imageId = 3;
         Bitmap bitmap = dbHelper.getImageById(imageId);
         if(bitmap != null){
