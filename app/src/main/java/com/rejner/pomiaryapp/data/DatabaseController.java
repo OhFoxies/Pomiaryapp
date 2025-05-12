@@ -94,12 +94,12 @@ public class DatabaseController extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    // query do przerobienia ewentualnie
+    // query do przerobienia
     public Bitmap getImageById(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         Bitmap bitmap = null;
 
-        Cursor cursor = db.rawQuery("SELECT image from images_table WHERE id = ?", new String[]{String.valueOf(id)});
+        Cursor cursor = db.rawQuery("SELECT " + TablesController.Zdjecia.COLUMN_NAME_IMAGE +  " from " + TablesController.Zdjecia.TABLE_NAME +  " WHERE id = ?", new String[]{String.valueOf(id)});
 
         if(cursor != null && cursor.moveToFirst()){
             byte[] imageBytes = cursor.getBlob(0);
