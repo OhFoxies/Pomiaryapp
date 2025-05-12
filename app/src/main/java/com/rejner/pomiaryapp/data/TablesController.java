@@ -11,6 +11,7 @@ public final class TablesController{
     public static class Pomiary implements BaseColumns {
         public static final String TABLE_NAME = "pomiary";
         public static final String COLUMN_NAME_NAME = "nazwa";
+        public static final String COLUMN_NAME_DATE = "data";
     }
 
     public static class Bloki implements BaseColumns {
