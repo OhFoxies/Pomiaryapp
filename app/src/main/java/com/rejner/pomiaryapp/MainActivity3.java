@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.rejner.pomiaryapp.data.DatabaseController;
+import com.rejner.pomiaryapp.data.TablesController;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,7 +44,15 @@ public class MainActivity3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main3);
-
+        DatabaseController dbHelper = new DatabaseController(this);
+        ImageView imageView = findViewById(R.id.image_view);
+        int imageId = 3;
+        Bitmap bitmap = dbHelper.getImageById(imageId);
+        if(bitmap != null){
+            imageView.setImageBitmap(bitmap);
+        } else{
+            Toast.makeText(this, "Nie znaleziono zdjecia o ID: " + imageId, Toast.LENGTH_SHORT).show();
+        }
     }
     private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -83,11 +94,11 @@ public class MainActivity3 extends AppCompatActivity {
 
     private void saveImageToDatabase(Bitmap bitmap){
         byte[] imageBytes = bitmapToBytes(bitmap);
-
-        SQLiteDatabase db = .getWritableDatabase();
+        DatabaseController dbHelper = new DatabaseController(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("image",imageBytes);
-        db.insert("images_table",null,values);
+        values.put(TablesController.Zdjecia.COLUMN_NAME_IMAGE,imageBytes);
+        db.insert(TablesController.Zdjecia.TABLE_NAME,null,values);
         db.close();
     }
 

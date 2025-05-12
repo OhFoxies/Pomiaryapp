@@ -1,8 +1,11 @@
 package com.rejner.pomiaryapp.data;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -85,4 +88,20 @@ public class DatabaseController extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    // query do przerobienia ewentualnie
+    public Bitmap getImageById(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Bitmap bitmap = null;
+
+        Cursor cursor = db.rawQuery("SELECT image from images_table WHERE id = ?", new String[]{String.valueOf(id)});
+
+        if(cursor != null && cursor.moveToFirst()){
+            byte[] imageBytes = cursor.getBlob(0);
+            bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            cursor.close();
+
+        }
+        db.close();
+        return bitmap;
+    }
 }
