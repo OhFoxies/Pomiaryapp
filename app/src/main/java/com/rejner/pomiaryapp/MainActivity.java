@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(TablesController.Pomiary.COLUMN_NAME_TITLE, "test");
-        values.put(TablesController.Pomiary.COLUMN_NAME_SUBTITLE, "UDALO SIE!");
+        values.put(TablesController.Pomiary.COLUMN_NAME_NAME, "Pomiary osiedle chuja");
 
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(TablesController.Pomiary.TABLE_NAME, null, values);
@@ -44,17 +43,16 @@ public class MainActivity extends AppCompatActivity {
 // you will actually use after this query.
         String[] projection = {
                 BaseColumns._ID,
-                TablesController.Pomiary.COLUMN_NAME_TITLE,
-                TablesController.Pomiary.COLUMN_NAME_SUBTITLE
+                TablesController.Pomiary.COLUMN_NAME_NAME,
         };
 
 // Filter results WHERE "title" = 'My Title'
-        String selection = TablesController.Pomiary.COLUMN_NAME_TITLE + " = ?";
+        String selection = TablesController.Pomiary.COLUMN_NAME_NAME + " = ?";
         String[] selectionArgs = { "My Title" };
 
 // How you want the results sorted in the resulting Cursor
         String sortOrder =
-                TablesController.Pomiary.COLUMN_NAME_SUBTITLE + " DESC";
+                TablesController.Pomiary.COLUMN_NAME_NAME + " DESC";
 
         Cursor cursor = db.query(
                 TablesController.Pomiary.TABLE_NAME,   // The table to query
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> itemNames = new ArrayList<>();
         while(cursor.moveToNext()) {
             String itemName = cursor.getString(
-                    cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_TITLE));
+                    cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
             itemNames.add(itemName);
         }
         cursor.close();
