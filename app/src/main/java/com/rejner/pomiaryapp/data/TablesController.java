@@ -35,11 +35,18 @@ public final class TablesController{
         public static final String COLUMN_NAME_TYPE = "typ";
     }
 
+
     public static class Gniazdko implements BaseColumns {
         public static final String TABLE_NAME = "gniazdko";
         public static final String COLUMN_NAME_ROOM_ID = "id_pokoju";
         public static final String COLUMN_NAME_COMMENT = "uwagi";
         public static final String COLUMN_NAME_MEASUREMENT= "pomiar";
+
+    }
+    public static class Zdjecia implements BaseColumns {
+        public static final String TABLE_NAME = "zdjecia";
+        public static final String COLUMN_NAME_FLAT_ID = "id_mieszkania";
+        public static final String COLUMN_NAME_IMAGE = "zdjecie";
 
     }
 }

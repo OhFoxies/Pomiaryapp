@@ -40,7 +40,13 @@ public class DatabaseController extends SQLiteOpenHelper {
                     TablesController.Gniazdko.COLUMN_NAME_MEASUREMENT + "VARCHAR(255), " +
                     TablesController.Gniazdko.COLUMN_NAME_ROOM_ID + "INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Gniazdko.COLUMN_NAME_ROOM_ID + ") " +
-                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + "));";
+                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + "));"
+                    + "CREATE TABLE " + TablesController.Zdjecia.TABLE_NAME +
+                    " (" + TablesController.Zdjecia._ID + " INTEGER PRIMARY KEY, " +
+                    TablesController.Zdjecia.COLUMN_NAME_IMAGE + "BLOB, " +
+                    TablesController.Zdjecia.COLUMN_NAME_FLAT_ID + "INTEGER" +
+                    "FOREIGN KEY (" + TablesController.Zdjecia.COLUMN_NAME_FLAT_ID + ") " +
+                    "REFERENCES " + TablesController.Mieszkanie.TABLE_NAME + "(" + TablesController.Mieszkanie._ID + "));";
 
 
 
@@ -54,6 +60,7 @@ public class DatabaseController extends SQLiteOpenHelper {
                     "DROP TABLE IF EXISTS " + TablesController.Bloki.TABLE_NAME + "; " +
                     "DROP TABLE IF EXISTS " + TablesController.Mieszkanie.TABLE_NAME + "; " +
                     "DROP TABLE IF EXISTS " + TablesController.Pokoj.TABLE_NAME + "; " +
+                    "DROP TABLE IF EXISTS " + TablesController.Zdjecia.TABLE_NAME + "; " +
                     "DROP TABLE IF EXISTS " + TablesController.Gniazdko.TABLE_NAME;
 
 
