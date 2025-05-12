@@ -13,7 +13,8 @@ public class DatabaseController extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
                     TablesController.Pomiary._ID + " INTEGER PRIMARY KEY," +
-                    TablesController.Pomiary.COLUMN_NAME_NAME + " VARCHAR(255)); " +
+                    TablesController.Pomiary.COLUMN_NAME_NAME + " VARCHAR(255), " +
+                    TablesController.Pomiary.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE); " +
                     "CREATE TABLE " + TablesController.Bloki.TABLE_NAME +
                     " (" + TablesController.Bloki._ID + " INTEGER PRIMARY KEY, "
                     + TablesController.Bloki.COLUMN_NAME_ID_MEASUREMENT + " INTEGER, "
