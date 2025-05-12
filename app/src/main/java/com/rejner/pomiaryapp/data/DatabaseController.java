@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.google.android.material.tabs.TabLayout;
-
 public class DatabaseController extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
@@ -27,34 +25,13 @@ public class DatabaseController extends SQLiteOpenHelper {
                     TablesController.Mieszkanie.COLUMN_NAME_DATE + "DATE DEFAULT CURRENT_DATE, " +
                     TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + "INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + ") " +
-                    "REFERENCES " + TablesController.Bloki.TABLE_NAME + "(" + TablesController.Bloki._ID + "));"
-                    + "CREATE TABLE " + TablesController.Pokoj.TABLE_NAME +
-                    " (" + TablesController.Pokoj._ID + " INTEGER PRIMARY KEY, " +
-                    TablesController.Pokoj.COLUMN_NAME_TYPE + "VARCHAR(255), " +
-                    TablesController.Pokoj.COLUMN_NAME_FLAT_ID + "INTEGER, " +
-                    "FOREIGN KEY (" + TablesController.Pokoj.COLUMN_NAME_FLAT_ID + ") " +
-                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + "));"
-                    + "CREATE TABLE " + TablesController.Gniazdko.TABLE_NAME +
-                    " (" + TablesController.Gniazdko._ID + " INTEGER PRIMARY KEY, " +
-                    TablesController.Gniazdko.COLUMN_NAME_COMMENT + "TEXT, " +
-                    TablesController.Gniazdko.COLUMN_NAME_MEASUREMENT + "VARCHAR(255), " +
-                    TablesController.Gniazdko.COLUMN_NAME_ROOM_ID + "INTEGER, " +
-                    "FOREIGN KEY (" + TablesController.Gniazdko.COLUMN_NAME_ROOM_ID + ") " +
-                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + "));";
-
-
-
-
+                    "REFERENCES " + TablesController.Bloki.TABLE_NAME + "(" + TablesController.Bloki._ID + "))";
 
 
 
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + TablesController.Pomiary.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Bloki.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Mieszkanie.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Pokoj.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Gniazdko.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + TablesController.Pomiary.TABLE_NAME;
 
 
     public DatabaseController(Context context) {
