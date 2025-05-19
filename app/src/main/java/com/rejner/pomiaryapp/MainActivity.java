@@ -89,9 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
             button.setOnClickListener(v -> {
                 Toast.makeText(this, "Kliknięto: " + p.name, Toast.LENGTH_SHORT).show();
+                startActivity(MainActivity4);
             });
 
             container.addView(itemView);
         }
     }
+
 }
