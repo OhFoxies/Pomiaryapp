@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DatabaseController extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Pomiary.db";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
