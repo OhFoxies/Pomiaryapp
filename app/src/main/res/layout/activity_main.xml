@@ -102,47 +102,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:id="@+id/measurements">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-
-            android:padding="15dp"
-            android:background="@drawable/margin_radius">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" android:layout_marginBottom="20dp">
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_height="wrap_content"
-                    android:text="Nazwa pomiaru " />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_marginLeft="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="24-05-2025 " />
-
-            </LinearLayout>
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="300sp"
-                android:layout_height="50dp"
-                android:text="Wyświetl"
-                android:textColor="#dce0d9"
-                android:textSize="18dp"
-                android:backgroundTint="#520834"/>
-        </LinearLayout>
     </LinearLayout>
 
 
