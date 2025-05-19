@@ -5,10 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
+        this.reloadMeasurements();
         Button button = findViewById(R.id.createMeasurement);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,12 +51,32 @@ public class MainActivity extends AppCompatActivity {
                     values.put(TablesController.Pomiary.COLUMN_NAME_NAME, measurementName.toString());
 
                     db.insert(TablesController.Pomiary.TABLE_NAME, null, values);
+                    reloadMeasurements();
                 }
             }
         });
+
     }
     private void reloadMeasurements() {
         List<TablesController.Pomiar> measurements = dbHelper.getAllMeasurements();
+        LinearLayout container = findViewById(R.id.measurements);
+        LayoutInflater inflater = LayoutInflater.from(this);
 
+        for (TablesController.Pomiar p : measurements) {
+            View itemView = inflater.inflate(R.layout.item_measurement, container, false);
+
+            TextView nameText = itemView.findViewById(R.id.measurementName);
+            TextView dateText = itemView.findViewById(R.id.measurementDate);
+            Button button = itemView.findViewById(R.id.showButton);
+
+            nameText.setText(p.name);
+            dateText.setText(p.date);
+
+            button.setOnClickListener(v -> {
+                Toast.makeText(this, "Kliknięto: " + p.name, Toast.LENGTH_SHORT).show();
+            });
+
+            container.addView(itemView);
+        }
     }
 }
