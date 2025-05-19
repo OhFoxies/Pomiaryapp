@@ -3,8 +3,10 @@ package com.rejner.pomiaryapp;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,13 +29,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseController dbHelper = new DatabaseController(this);
-    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        DatabaseController dbHelper = new DatabaseController(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
         this.reloadMeasurements();
         Button button = findViewById(R.id.createMeasurement);
         button.setOnClickListener(new View.OnClickListener() {
@@ -43,12 +48,18 @@ public class MainActivity extends AppCompatActivity {
                 if (measurementName.getText().toString().isEmpty()) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
                     errorView.setText("Nie podano nazwy pomiaru");
-                } if (dbHelper.doesMeasurementExist(measurementName.toString())) {
+                } if (dbHelper.doesMeasurementExist(measurementName.getText().toString())) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
                     errorView.setText("Pomiar o tej nazwie już istnieje");
                 } else {
                     ContentValues values = new ContentValues();
-                    values.put(TablesController.Pomiary.COLUMN_NAME_NAME, measurementName.toString());
+                    measurementName.clearFocus();
+                    TextView errorView = findViewById(R.id.CreationFeedback);
+                    errorView.setTextColor(Color.rgb(72, 245, 66));
+                    errorView.setText("Pomiar został dodany");
+
+                    values.put(TablesController.Pomiary.COLUMN_NAME_NAME, measurementName.getText().toString());
+                    measurementName.setText("");
 
                     db.insert(TablesController.Pomiary.TABLE_NAME, null, values);
                     reloadMeasurements();
@@ -58,9 +69,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void reloadMeasurements() {
+        DatabaseController dbHelper = new DatabaseController(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<TablesController.Pomiar> measurements = dbHelper.getAllMeasurements();
         LinearLayout container = findViewById(R.id.measurements);
         LayoutInflater inflater = LayoutInflater.from(this);
+        container.removeAllViews();
 
         for (TablesController.Pomiar p : measurements) {
             View itemView = inflater.inflate(R.layout.item_measurement, container, false);
@@ -71,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             nameText.setText(p.name);
             dateText.setText(p.date);
+            Log.d("Measurement", "Name: " + p.name + ", Date: " + p.date);
 
             button.setOnClickListener(v -> {
                 Toast.makeText(this, "Kliknięto: " + p.name, Toast.LENGTH_SHORT).show();

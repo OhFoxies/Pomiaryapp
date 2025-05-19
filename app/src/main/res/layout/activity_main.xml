@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:background="#595959">
+
+<LinearLayout         android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -49,7 +52,7 @@
                 android:textSize="18dp"
                 android:textColor="#d60909"
                 android:layout_height="wrap_content"
-                android:text="Utwórz nowy pomiar"
+                android:text=""
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"/>
             <TextView
@@ -64,7 +67,7 @@
             <EditText
                 android:id="@+id/MeasurementName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:ems="10"
                 android:inputType="text"
                 android:text="Nazwa pomiaru" />
@@ -106,11 +109,13 @@
         android:id="@+id/measurements">
 
     </LinearLayout>
-
-
-
-
-
-
-
 </LinearLayout>
+</ScrollView>
+
+
+
+
+
+
+
+
