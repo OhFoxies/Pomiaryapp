@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        TextView text = findViewById(R.id.test);
-        text.setText(itemNames.get(0));
+//        TextView text = findViewById(R.id.test);
+//        text.setText(itemNames.get(0));
         Button button = findViewById(R.id.createMeasurement);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
