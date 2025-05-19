@@ -7,9 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#595959"
-
-    >
+    android:background="#595959">
 
     <TextView
         android:id="@+id/textView"
@@ -20,7 +18,6 @@
         android:textSize="20dp"
         android:textColor="@color/white"
         android:text="Pomiary Elektryczne" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,6 +60,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_height="wrap_content"
                 android:text="Nazwa pomiaru:" />
+
             <EditText
                 android:id="@+id/MeasurementName"
                 android:layout_width="match_parent"
@@ -146,6 +144,9 @@
                 android:backgroundTint="#520834"/>
         </LinearLayout>
     </LinearLayout>
+
+
+
 
 
 

@@ -5,9 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -75,18 +72,7 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
 
-//        TextView text = findViewById(R.id.test);
-//        text.setText(itemNames.get(0));
-        Button button = findViewById(R.id.createMeasurement);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText editText = findViewById(R.id.MeasurementName);
-                if (editText.getText().toString().isEmpty()) {
-                    TextView errorView = findViewById(R.id.CreationFeedback);
-                    errorView.setText("Nie podano nazwy pomiaru");
-                } if ()
-            }
-        });
+        TextView text = findViewById(R.id.test);
+        text.setText(itemNames.get(0));
     }
 }
