@@ -50,4 +50,15 @@ public final class TablesController{
         public static final String COLUMN_NAME_IMAGE = "zdjecie";
 
     }
+    public static class Pomiar {
+        public long id;
+        public String name;
+        public String date;
+
+        public Pomiar(long id, String name, String date) {
+            this.id = id;
+            this.name = name;
+            this.date = date;
+        }
+    }
 }

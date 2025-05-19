@@ -6,8 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.BaseColumns;
 
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseController extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
@@ -104,5 +108,69 @@ public class DatabaseController extends SQLiteOpenHelper {
         }
         db.close();
         return bitmap;
+    }
+
+    public boolean doesMeasurementExist(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                TablesController.Pomiary.COLUMN_NAME_NAME,
+        };
+
+        String selection = TablesController.Pomiary.COLUMN_NAME_NAME + " = ?";
+        String[] selectionArgs = { name };
+
+        Cursor cursor = db.query(
+                TablesController.Pomiary.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        List<Long> ids = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            Long id = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(TablesController.Pomiary._ID));
+            ids.add(id);
+        }
+        cursor.close();
+        return !ids.isEmpty();
+    }
+
+    public List<TablesController.Pomiar> getAllMeasurements() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                TablesController.Pomiary.COLUMN_NAME_NAME,
+                TablesController.Pomiary.COLUMN_NAME_DATE
+        };
+
+
+        Cursor cursor = db.query(
+                TablesController.Pomiary.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                TablesController.Pomiary.COLUMN_NAME_DATE
+        );
+
+        List<TablesController.Pomiar> measurements = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Pomiary._ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
+            String date = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_DATE));
+
+            measurements.add(new TablesController.Pomiar(id, name, date));
+        }
+        cursor.close();
+
+        return measurements;
     }
 }
