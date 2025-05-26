@@ -37,7 +37,6 @@ public class DatabaseController extends SQLiteOpenHelper {
                     "CREATE TABLE " + TablesController.Mieszkanie.TABLE_NAME + " (" +
                     TablesController.Mieszkanie._ID + " INTEGER PRIMARY KEY, " + //
                     TablesController.Mieszkanie.COLUMN_NAME_NUMBER + " VARCHAR(255), " +
-                    TablesController.Mieszkanie.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE, " +
                     TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + ") " +
                     "REFERENCES " + TablesController.Bloki.TABLE_NAME + "(" + TablesController.Bloki._ID + ")); ",
