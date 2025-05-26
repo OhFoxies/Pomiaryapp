@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DatabaseController extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "Pomiary.db";
     private static final String[] SQL_CREATE_ENTRIES = {
                     "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
@@ -37,7 +37,6 @@ public class DatabaseController extends SQLiteOpenHelper {
                     "CREATE TABLE " + TablesController.Mieszkanie.TABLE_NAME + " (" +
                     TablesController.Mieszkanie._ID + " INTEGER PRIMARY KEY, " + //
                     TablesController.Mieszkanie.COLUMN_NAME_NUMBER + " VARCHAR(255), " +
-                    TablesController.Mieszkanie.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE, " +
                     TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + ") " +
                     "REFERENCES " + TablesController.Bloki.TABLE_NAME + "(" + TablesController.Bloki._ID + ")); ",
@@ -59,7 +58,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
                     "CREATE TABLE " + TablesController.Zdjecia.TABLE_NAME + " (" +
                     TablesController.Zdjecia._ID + " INTEGER PRIMARY KEY, " +
-                    TablesController.Zdjecia.COLUMN_NAME_IMAGE + " BLOB, " +
+                    TablesController.Zdjecia.COLUMN_NAME_IMAGE + " TEXT, " +
                     TablesController.Zdjecia.COLUMN_NAME_FLAT_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Zdjecia.COLUMN_NAME_FLAT_ID + ") " +
                     "REFERENCES " + TablesController.Mieszkanie.TABLE_NAME + "(" + TablesController.Mieszkanie._ID + "));" };

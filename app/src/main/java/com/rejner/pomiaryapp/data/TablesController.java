@@ -26,7 +26,6 @@ public final class TablesController{
         public static final String TABLE_NAME = "mieszkanie";
         public static final String COLUMN_NAME_HOME_ID = "id_blok";
         public static final String COLUMN_NAME_NUMBER = "numer";
-        public static final String COLUMN_NAME_DATE = "data_pomiarow";
 
     }
 
