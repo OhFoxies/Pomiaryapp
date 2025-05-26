@@ -97,8 +97,13 @@ public class MainActivity extends AppCompatActivity {
 
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(this, MainActivity4.class);
+                intent.putExtra("keyName", "Hello from previous activity!");
+
                 startActivity(intent);
             });
+
+
+
 
             delete.setOnClickListener(view -> {
                 dbHelper.deleteById(p.id,this);
