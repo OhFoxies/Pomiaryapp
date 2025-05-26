@@ -21,7 +21,7 @@
             android:background="#808f85"
             android:textSize="20dp"
             android:textColor="@color/white"
-            android:text="Mieszkanie xyz/123" />
+            android:text="Blok xyz/123" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Zdjęcia"
+                    android:text="Dodaj mieszkania"
                     android:textSize="25dp"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"
@@ -56,35 +56,34 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/textViewDodajUsunZdjecia"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dodaj/usuń zdjęcia:"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_marginTop="15dp"
-                    android:gravity="left" />
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center">
 
                     <Button
                         android:id="@+id/addPhoto"
-                        android:layout_width="200sp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="Dodaj"
+                        android:text="Dodaj zdjęcie"
                         android:textColor="#dce0d9"
                         android:textSize="18dp"
                         android:backgroundTint="#520834" />
 
                     <Button
                         android:id="@+id/deletePhoto"
-                        android:layout_width="200sp"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="Usun"
+                        android:text="Usun zdjęcie"
                         android:textColor="#dce0d9"
                         android:textSize="18dp"
                         android:backgroundTint="#520834" />
