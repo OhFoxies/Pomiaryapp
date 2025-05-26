@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
         this.reloadMeasurements();
         Button button = findViewById(R.id.createMeasurement);
+        Button button2 = findViewById(R.id.button);
+        button2.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity3.class);
+            startActivity(intent);
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
