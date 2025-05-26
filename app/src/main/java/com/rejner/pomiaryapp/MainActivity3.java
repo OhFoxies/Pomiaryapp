@@ -72,13 +72,12 @@ public class MainActivity3 extends AppCompatActivity {
 
             do {
                 int id = cursor.getInt(idIndex);
-                byte[] imageBytes = cursor.getBlob(imageIndex);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                String imagePath = cursor.getString(imageIndex);
 
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
                 if (bitmap != null) {
                     addImageToLayout(bitmap, id);
                 }
-
             } while (cursor.moveToNext());
         }
 
@@ -86,26 +85,24 @@ public class MainActivity3 extends AppCompatActivity {
         db.close();
     }
 
-    private void addImageToLayout(Bitmap bitmap, int id) {
-        LinearLayout itemLayout = new LinearLayout(this);
-        itemLayout.setOrientation(LinearLayout.HORIZONTAL);
-        itemLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
 
+    private void addImageToLayout(Bitmap bitmap, int id) {
         ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(bitmap);
         imageView.setTag(id);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(
-                0, 500, 1f
+                LinearLayout.LayoutParams.MATCH_PARENT, 500
         );
         imageLayoutParams.setMargins(16, 16, 16, 16);
         imageView.setLayoutParams(imageLayoutParams);
 
-        imageView.setOnClickListener(view -> {
+        // Tap to view full image
+        imageView.setOnClickListener(view -> showFullImage(bitmap));
+
+        // Long press to select/deselect for deletion
+        imageView.setOnLongClickListener(view -> {
             int imageId = (int) view.getTag();
             if (selectedImageIds.contains(imageId)) {
                 selectedImageIds.remove(imageId);
@@ -114,10 +111,10 @@ public class MainActivity3 extends AppCompatActivity {
                 selectedImageIds.add(imageId);
                 view.setAlpha(0.5f);
             }
+            return true;
         });
 
-        itemLayout.addView(imageView);
-        imageContainer.addView(itemLayout);
+        imageContainer.addView(imageView);
     }
 
     private void dispatchTakePictureIntent() {
@@ -156,26 +153,30 @@ public class MainActivity3 extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-            if (bitmap != null) {
-                saveImageToDatabase(bitmap);
-                addImageToLayout(bitmap, getLastInsertedId());
-            } else {
-                Toast.makeText(this, "Failed to load captured image", Toast.LENGTH_SHORT).show();
+            // currentPhotoPath is String path, use it directly
+            if (currentPhotoPath != null) {
+                saveImageToDatabase(currentPhotoPath);
+                Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                if (bitmap != null) {
+                    addImageToLayout(bitmap, getLastInsertedId());
+                } else {
+                    Toast.makeText(this, "Failed to load captured image", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
-    private void saveImageToDatabase(Bitmap bitmap) {
-        byte[] imageBytes = bitmapToBytes(bitmap);
+
+    private void saveImageToDatabase(String imagePath) {
         DatabaseController dbHelper = new DatabaseController(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TablesController.Zdjecia.COLUMN_NAME_IMAGE, imageBytes);
+        values.put(TablesController.Zdjecia.COLUMN_NAME_IMAGE, imagePath);
         db.insert(TablesController.Zdjecia.TABLE_NAME, null, values);
         db.close();
     }
+
 
     private int getLastInsertedId() {
         DatabaseController dbHelper = new DatabaseController(this);
@@ -203,31 +204,68 @@ public class MainActivity3 extends AppCompatActivity {
         }
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         ArrayList<View> viewsToRemove = new ArrayList<>();
 
         for (int i = 0; i < imageContainer.getChildCount(); i++) {
-            View child = imageContainer.getChildAt(i);
-            if (child instanceof LinearLayout) {
-                LinearLayout layout = (LinearLayout) child;
-                if (layout.getChildAt(0) instanceof ImageView) {
-                    ImageView imageView = (ImageView) layout.getChildAt(0);
-                    int id = (int) imageView.getTag();
-                    if (selectedImageIds.contains(id)) {
-                        viewsToRemove.add(layout);
-
-                        // delete from database
-                        db.delete(TablesController.Zdjecia.TABLE_NAME, "_id=?", new String[]{String.valueOf(id)});
+            View view = imageContainer.getChildAt(i);
+            if (view instanceof ImageView) {
+                int id = (int) view.getTag();
+                if (selectedImageIds.contains(id)) {
+                    // Fetch path before deleting DB row
+                    String imagePath = getImagePathById(db, id);
+                    if (imagePath != null) {
+                        File file = new File(imagePath);
+                        if (file.exists()) {
+                            boolean deleted = file.delete();
+                            if (!deleted) {
+                                Log.w("MainActivity3", "Failed to delete file: " + imagePath);
+                            }
+                        }
                     }
+                    // Delete from DB
+                    db.delete(TablesController.Zdjecia.TABLE_NAME, TablesController.Zdjecia._ID + "=?", new String[]{String.valueOf(id)});
+                    viewsToRemove.add(view);
                 }
             }
         }
 
-        for (View v : viewsToRemove) {
-            imageContainer.removeView(v);
+        // Remove views from layout after loop
+        for (View view : viewsToRemove) {
+            imageContainer.removeView(view);
         }
 
         selectedImageIds.clear();
         db.close();
+    }
+
+
+
+    // Helper method to get image path by ID
+    private String getImagePathById(SQLiteDatabase db, int id) {
+        String imagePath = null;
+        Cursor cursor = db.query(
+                TablesController.Zdjecia.TABLE_NAME,
+                new String[]{TablesController.Zdjecia.COLUMN_NAME_IMAGE},
+                TablesController.Zdjecia._ID + "=?",
+                new String[]{String.valueOf(id)},
+                null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                imagePath = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Zdjecia.COLUMN_NAME_IMAGE));
+            }
+            cursor.close();
+        }
+        return imagePath;
+    }
+
+    private void showFullImage(Bitmap bitmap) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        ImageView fullImageView = new ImageView(this);
+        fullImageView.setImageBitmap(bitmap);
+        fullImageView.setAdjustViewBounds(true);
+        builder.setView(fullImageView);
+        builder.setPositiveButton("Close", (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 }
