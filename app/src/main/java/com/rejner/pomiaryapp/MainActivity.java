@@ -1,6 +1,7 @@
 package com.rejner.pomiaryapp;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -88,10 +89,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Measurement", "Name: " + p.name + ", Date: " + p.date);
 
             button.setOnClickListener(v -> {
-                Toast.makeText(this, "Kliknięto: " + p.name, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity4.class);
+                startActivity(intent);
             });
 
             container.addView(itemView);
         }
     }
+
 }
