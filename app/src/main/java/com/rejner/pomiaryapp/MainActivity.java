@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             delete.setOnClickListener(view -> {
-                dbHelper.deleteById(p.id,this);
+                dbHelper.deleteById(p.id,this,TablesController.Pomiary.TABLE_NAME);
                 reloadMeasurements();
             });
 

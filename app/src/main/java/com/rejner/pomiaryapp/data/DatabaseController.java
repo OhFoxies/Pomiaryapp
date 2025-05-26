@@ -185,10 +185,10 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return measurements;
     }
-    public void deleteById(long id, Context context){
+    public void deleteById(long id, Context context, String tableName){
         SQLiteDatabase db = this.getWritableDatabase();
         Toast.makeText(context, String.valueOf(id), Toast.LENGTH_SHORT).show();
-        db.delete(TablesController.Pomiary.TABLE_NAME, TablesController.Pomiary._ID + "=?", new String[]{String.valueOf(id)});
+        db.delete(tableName, TablesController.Pomiary._ID + "=?", new String[]{String.valueOf(id)});
 
         db.close();
     }
