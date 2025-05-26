@@ -48,11 +48,11 @@ public class MainActivity4 extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<TablesController.Home> homes = dbHelper.getAllHomes();
 
-        LinearLayout container = findViewById(R.id.measurements);
+        LinearLayout container = findViewById(R.id.homes);
         LayoutInflater inflater = LayoutInflater.from(this);
         container.removeAllViews();
 
-        for (TablesController.Pomiar p : measurements) {
+        for (TablesController.Home home : homes) {
             View itemView = inflater.inflate(R.layout.item_measurement, container, false);
 
             TextView nameText = itemView.findViewById(R.id.measurementName);
@@ -62,7 +62,6 @@ public class MainActivity4 extends AppCompatActivity {
 
             nameText.setText(p.name);
             dateText.setText(p.date);
-            Log.d("Measurement", "Name: " + p.name + ", Date: " + p.date);
 
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(this, MainActivity4.class);
