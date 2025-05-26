@@ -61,4 +61,23 @@ public final class TablesController{
             this.date = date;
         }
     }
+
+    public static class Home {
+        public long id;
+        public long id_pomiar;
+
+
+        public String street;
+        public String city;
+        public String number;
+
+        public Home(long id, long id_pomiar, String street, String city, String number) {
+            this.id = id;
+            this.id_pomiar = id_pomiar;
+            this.street = street;
+            this.city = city;
+            this.number = number;
+
+        }
+    }
 }

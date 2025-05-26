@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(this, MainActivity4.class);
-                intent.putExtra("keyName", "Hello from previous activity!");
+                intent.putExtra("measurement", p.id);
 
                 startActivity(intent);
             });
