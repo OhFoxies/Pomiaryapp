@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.BaseColumns;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.rejner.pomiaryapp.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,5 +180,12 @@ public class DatabaseController extends SQLiteOpenHelper {
         cursor.close();
 
         return measurements;
+    }
+    public void deleteById(long id, Context context){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Toast.makeText(context, String.valueOf(id), Toast.LENGTH_SHORT).show();
+        db.delete(TablesController.Pomiary.TABLE_NAME, TablesController.Pomiary._ID + "=?", new String[]{String.valueOf(id)});
+
+        db.close();
     }
 }

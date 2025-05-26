@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             TextView nameText = itemView.findViewById(R.id.measurementName);
             TextView dateText = itemView.findViewById(R.id.measurementDate);
             Button button = itemView.findViewById(R.id.showButton);
+            Button delete = itemView.findViewById(R.id.deleteButton);
 
             nameText.setText(p.name);
             dateText.setText(p.date);
@@ -91,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(this, MainActivity4.class);
                 startActivity(intent);
+            });
+
+            delete.setOnClickListener(view -> {
+                dbHelper.deleteById(p.id,this);
+                reloadMeasurements();
             });
 
             container.addView(itemView);
