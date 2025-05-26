@@ -19,11 +19,11 @@ public class DatabaseController extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Pomiary.db";
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String[] SQL_CREATE_ENTRIES = {
             "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
                     TablesController.Pomiary._ID + " INTEGER PRIMARY KEY, " +
                     TablesController.Pomiary.COLUMN_NAME_NAME + " VARCHAR(255), " +
-                    TablesController.Pomiary.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE); " +
+                    TablesController.Pomiary.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE); ",
 
                     "CREATE TABLE " + TablesController.Bloki.TABLE_NAME + " (" +
                     TablesController.Bloki._ID + " INTEGER PRIMARY KEY, " +
@@ -32,7 +32,7 @@ public class DatabaseController extends SQLiteOpenHelper {
                     TablesController.Bloki.COLUMN_NAME_STREET + " VARCHAR(255), " +
                     TablesController.Bloki.COLUMN_NAME_NUMBER + " VARCHAR(255), " +
                     "FOREIGN KEY (" + TablesController.Bloki.COLUMN_NAME_ID_MEASUREMENT + ") " +
-                    "REFERENCES " + TablesController.Pomiary.TABLE_NAME + "(" + TablesController.Pomiary._ID + ")); " +
+                    "REFERENCES " + TablesController.Pomiary.TABLE_NAME + "(" + TablesController.Pomiary._ID + ")); ",
 
                     "CREATE TABLE " + TablesController.Mieszkanie.TABLE_NAME + " (" +
                     TablesController.Mieszkanie._ID + " INTEGER PRIMARY KEY, " + // ✅ Added _ID here
@@ -40,14 +40,14 @@ public class DatabaseController extends SQLiteOpenHelper {
                     TablesController.Mieszkanie.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE, " +
                     TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + ") " +
-                    "REFERENCES " + TablesController.Bloki.TABLE_NAME + "(" + TablesController.Bloki._ID + ")); " +
+                    "REFERENCES " + TablesController.Bloki.TABLE_NAME + "(" + TablesController.Bloki._ID + ")); ",
 
                     "CREATE TABLE " + TablesController.Pokoj.TABLE_NAME + " (" +
                     TablesController.Pokoj._ID + " INTEGER PRIMARY KEY, " +
                     TablesController.Pokoj.COLUMN_NAME_TYPE + " VARCHAR(255), " +
                     TablesController.Pokoj.COLUMN_NAME_FLAT_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Pokoj.COLUMN_NAME_FLAT_ID + ") " +
-                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + ")); " +
+                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + ")); ",
 
                     "CREATE TABLE " + TablesController.Gniazdko.TABLE_NAME + " (" +
                     TablesController.Gniazdko._ID + " INTEGER PRIMARY KEY, " +
@@ -55,14 +55,14 @@ public class DatabaseController extends SQLiteOpenHelper {
                     TablesController.Gniazdko.COLUMN_NAME_MEASUREMENT + " VARCHAR(255), " +
                     TablesController.Gniazdko.COLUMN_NAME_ROOM_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Gniazdko.COLUMN_NAME_ROOM_ID + ") " +
-                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + ")); " +
+                    "REFERENCES " + TablesController.Pokoj.TABLE_NAME + "(" + TablesController.Pokoj._ID + ")); ",
 
                     "CREATE TABLE " + TablesController.Zdjecia.TABLE_NAME + " (" +
                     TablesController.Zdjecia._ID + " INTEGER PRIMARY KEY, " +
                     TablesController.Zdjecia.COLUMN_NAME_IMAGE + " BLOB, " +
                     TablesController.Zdjecia.COLUMN_NAME_FLAT_ID + " INTEGER, " +
                     "FOREIGN KEY (" + TablesController.Zdjecia.COLUMN_NAME_FLAT_ID + ") " +
-                    "REFERENCES " + TablesController.Mieszkanie.TABLE_NAME + "(" + TablesController.Mieszkanie._ID + "));";
+                    "REFERENCES " + TablesController.Mieszkanie.TABLE_NAME + "(" + TablesController.Mieszkanie._ID + "));" };
 
 
 
@@ -72,13 +72,13 @@ public class DatabaseController extends SQLiteOpenHelper {
 
 
 
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + TablesController.Pomiary.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Bloki.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Mieszkanie.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Pokoj.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Zdjecia.TABLE_NAME + "; " +
-                    "DROP TABLE IF EXISTS " + TablesController.Gniazdko.TABLE_NAME;
+    private static final String[] SQL_DELETE_ENTRIES =
+            { "DROP TABLE IF EXISTS " + TablesController.Pomiary.TABLE_NAME + "; ",
+                    "DROP TABLE IF EXISTS " + TablesController.Bloki.TABLE_NAME + "; ",
+                    "DROP TABLE IF EXISTS " + TablesController.Mieszkanie.TABLE_NAME + "; ",
+                    "DROP TABLE IF EXISTS " + TablesController.Pokoj.TABLE_NAME + "; ",
+                    "DROP TABLE IF EXISTS " + TablesController.Zdjecia.TABLE_NAME + "; ",
+                    "DROP TABLE IF EXISTS " + TablesController.Gniazdko.TABLE_NAME};
 
 
     public DatabaseController(Context context) {
@@ -87,14 +87,18 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        for (String createTable : SQL_CREATE_ENTRIES) {
+            db.execSQL(createTable);
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES);
+        for (String deleteTable : SQL_DELETE_ENTRIES) {
+            db.execSQL(deleteTable);
+        }
         onCreate(db);
     }
 

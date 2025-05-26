@@ -217,7 +217,7 @@ public class MainActivity3 extends AppCompatActivity {
                         viewsToRemove.add(layout);
 
                         // delete from database
-                        db.delete(TablesController.Zdjecia.TABLE_NAME, "id=?", new String[]{String.valueOf(id)});
+                        db.delete(TablesController.Zdjecia.TABLE_NAME, "_id=?", new String[]{String.valueOf(id)});
                     }
                 }
             }
