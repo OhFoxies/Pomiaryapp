@@ -20,7 +20,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "Pomiary.db";
     private static final String[] SQL_CREATE_ENTRIES = {
-            "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
+                    "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
                     TablesController.Pomiary._ID + " INTEGER PRIMARY KEY, " +
                     TablesController.Pomiary.COLUMN_NAME_NAME + " VARCHAR(255), " +
                     TablesController.Pomiary.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE); ",
@@ -35,7 +35,7 @@ public class DatabaseController extends SQLiteOpenHelper {
                     "REFERENCES " + TablesController.Pomiary.TABLE_NAME + "(" + TablesController.Pomiary._ID + ")); ",
 
                     "CREATE TABLE " + TablesController.Mieszkanie.TABLE_NAME + " (" +
-                    TablesController.Mieszkanie._ID + " INTEGER PRIMARY KEY, " + // ✅ Added _ID here
+                    TablesController.Mieszkanie._ID + " INTEGER PRIMARY KEY, " + //
                     TablesController.Mieszkanie.COLUMN_NAME_NUMBER + " VARCHAR(255), " +
                     TablesController.Mieszkanie.COLUMN_NAME_DATE + " DATE DEFAULT CURRENT_DATE, " +
                     TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + " INTEGER, " +
@@ -185,11 +185,73 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return measurements;
     }
-    public void deleteById(long id, Context context){
+    public void deleteById(long id, Context context, String tableName){
         SQLiteDatabase db = this.getWritableDatabase();
         Toast.makeText(context, String.valueOf(id), Toast.LENGTH_SHORT).show();
-        db.delete(TablesController.Pomiary.TABLE_NAME, TablesController.Pomiary._ID + "=?", new String[]{String.valueOf(id)});
+        db.delete(tableName, TablesController.Pomiary._ID + "=?", new String[]{String.valueOf(id)});
 
         db.close();
+    }
+    public TablesController.Pomiar getMeasurementByID(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                TablesController.Pomiary.COLUMN_NAME_NAME,
+        };
+
+        String selection = TablesController.Pomiary._ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+
+        Cursor cursor = db.query(
+                TablesController.Pomiary.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        long id_ = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Pomiary._ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
+        String date = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_DATE));
+        cursor.close();
+        return new TablesController.Pomiar(id_, name, date);
+    }
+
+    public List<TablesController.Home> getAllHomes() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                TablesController.Bloki.COLUMN_NAME_ID_MEASUREMENT,
+                TablesController.Bloki.COLUMN_NAME_STREET,
+                TablesController.Bloki.COLUMN_NAME_NUMBER,
+                TablesController.Bloki.COLUMN_NAME_CITY,
+        };
+
+
+        Cursor cursor = db.query(
+                TablesController.Pomiary.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                TablesController.Pomiary.COLUMN_NAME_DATE
+        );
+
+        List<TablesController.Pomiar> measurements = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Pomiary._ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
+            String date = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_DATE));
+
+            measurements.add(new TablesController.Pomiar(id, name, date));
+        }
+        cursor.close();
+
+        return measurements;
     }
 }

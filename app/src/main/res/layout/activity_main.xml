@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:textSize="18dp"
-                android:textColor="#d60909"
+                android:textColor="#DB0909"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:layout_marginTop="5dp"

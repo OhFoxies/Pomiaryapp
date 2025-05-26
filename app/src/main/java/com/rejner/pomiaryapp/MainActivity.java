@@ -1,5 +1,7 @@
 package com.rejner.pomiaryapp;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -55,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 if (measurementName.getText().toString().isEmpty()) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
                     errorView.setText("Nie podano nazwy pomiaru");
-                } if (dbHelper.doesMeasurementExist(measurementName.getText().toString())) {
+                } else if (dbHelper.doesMeasurementExist(measurementName.getText().toString())) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
+                    errorView.setTextColor(Color.rgb(219, 9, 9));
                     errorView.setText("Pomiar o tej nazwie już istnieje");
                 } else {
                     ContentValues values = new ContentValues();
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(this, MainActivity4.class);
-                intent.putExtra("keyName", "Hello from previous activity!");
+                intent.putExtra("measurement", p.id);
 
                 startActivity(intent);
             });
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             delete.setOnClickListener(view -> {
-                dbHelper.deleteById(p.id,this);
+                dbHelper.deleteById(p.id,this,TablesController.Pomiary.TABLE_NAME);
                 reloadMeasurements();
             });
 
