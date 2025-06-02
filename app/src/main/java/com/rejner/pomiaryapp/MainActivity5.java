@@ -28,8 +28,11 @@ public class MainActivity5 extends AppCompatActivity {
         setContentView(R.layout.activity_main5);
         Intent intent = getIntent();
         long foreign_id = intent.getLongExtra("homeID",0);
+        String homeName = intent.getStringExtra("homeName");
         DatabaseController dbHelper = new DatabaseController(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        TextView titleView = findViewById(R.id.textView);
+        titleView.setText("Blok: " + homeName);
 
         this.reloadFlats(foreign_id);
         Button button = findViewById(R.id.createFlat);
