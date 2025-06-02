@@ -34,7 +34,7 @@ public class MainActivity4 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main4);
         Intent intent = getIntent();
-        int measurementId = intent.getIntExtra("measurementId", 0);
+        long measurementId = intent.getLongExtra("measurementId", 0);
         String measurementName = intent.getStringExtra("measurementName");
 
         DatabaseController dbHelper = new DatabaseController(this);
@@ -43,7 +43,7 @@ public class MainActivity4 extends AppCompatActivity {
         titleView.setText("Pomiar: " + measurementName);
 
 
-        this.reloadHomes();
+        this.reloadHomes(measurementId);
 
         Button button = findViewById(R.id.createHome);
         button.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +78,7 @@ public class MainActivity4 extends AppCompatActivity {
                     number.setText("");
 
                     db.insert(TablesController.Bloki.TABLE_NAME, null, values);
-                    reloadHomes();
+                    reloadHomes(measurementId);
                 }
 
             }
@@ -90,10 +90,10 @@ public class MainActivity4 extends AppCompatActivity {
 
     }
 
-    private void reloadHomes() {
+    private void reloadHomes(long measurementId) {
         DatabaseController dbHelper = new DatabaseController(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<TablesController.Home> homes = dbHelper.getAllHomes();
+        List<TablesController.Home> homes = dbHelper.getAllHomes(measurementId);
 
         LinearLayout container = findViewById(R.id.homes);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -125,7 +125,7 @@ public class MainActivity4 extends AppCompatActivity {
 
             delete.setOnClickListener(view -> {
                 dbHelper.deleteById(home.id,this, TablesController.Bloki.TABLE_NAME);
-                reloadHomes();
+                reloadHomes(measurementId);
             });
 
             container.addView(itemView);

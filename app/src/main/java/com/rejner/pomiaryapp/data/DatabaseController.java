@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DatabaseController extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "Pomiary.db";
     private static final String[] SQL_CREATE_ENTRIES = {
                     "CREATE TABLE " + TablesController.Pomiary.TABLE_NAME + " (" +
@@ -153,6 +153,9 @@ public class DatabaseController extends SQLiteOpenHelper {
         return !ids.isEmpty();
     }
 
+
+
+
     public List<TablesController.Pomiar> getAllMeasurements() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -231,7 +234,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         return result;
     }
 
-    public List<TablesController.Home> getAllHomes() {
+    public List<TablesController.Home> getAllHomes(long measurementId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = {
@@ -242,12 +245,16 @@ public class DatabaseController extends SQLiteOpenHelper {
                 TablesController.Bloki.COLUMN_NAME_CITY,
         };
 
+        String selection = TablesController.Bloki.COLUMN_NAME_ID_MEASUREMENT + " = ?";
+
+        String[] selectionArgs = {Long.toString(measurementId)};
+        Log.e("tak",selectionArgs[0]);
 
         Cursor cursor = db.query(
                 TablesController.Bloki.TABLE_NAME,
                 projection,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 null
@@ -267,6 +274,39 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return homes;
     }
+
+    public boolean doesFlatExist(String name, long foreign_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                TablesController.Mieszkanie.COLUMN_NAME_NUMBER,
+        };
+
+        String selection = TablesController.Mieszkanie.COLUMN_NAME_NUMBER + " = ? AND " + TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + " =?";
+        String[] selectionArgs = { name, Long.toString(foreign_id) };
+
+        Cursor cursor = db.query(
+                TablesController.Mieszkanie.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        List<Long> ids = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            Long id = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(TablesController.Mieszkanie._ID));
+            ids.add(id);
+        }
+        cursor.close();
+        return !ids.isEmpty();
+    }
+
+
     public List<TablesController.Flat> getAllFlats(long foreign_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 

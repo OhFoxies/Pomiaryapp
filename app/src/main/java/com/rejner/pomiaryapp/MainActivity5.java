@@ -42,7 +42,7 @@ public class MainActivity5 extends AppCompatActivity {
                     TextView errorView = findViewById(R.id.CreationFeedback);
                     errorView.setTextColor(Color.rgb(219, 9, 9));
                     errorView.setText("Nie podano numeru mieszkania");
-                } else if (dbHelper.doesMeasurementExist(flatNumber.getText().toString())) {
+                } else if (dbHelper.doesFlatExist(flatNumber.getText().toString() , foreign_id)) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
                     errorView.setTextColor(Color.rgb(219, 9, 9));
                     errorView.setText("Mieszkanie z tym numerem juz istnieje");
