@@ -60,6 +60,17 @@ public final class TablesController{
             this.date = date;
         }
     }
+    public static class Flat{
+        public long id;
+        public String number;
+        public long home_id;
+
+        public Flat(long home_id, String number, long id) {
+            this.home_id = home_id;
+            this.number = number;
+            this.id = id;
+        }
+    }
 
     public static class Home {
         public long id;

@@ -267,4 +267,38 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         return homes;
     }
+    public List<TablesController.Flat> getAllFlats(long foreign_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                TablesController.Mieszkanie.COLUMN_NAME_NUMBER,
+                TablesController.Mieszkanie.COLUMN_NAME_HOME_ID
+        };
+
+        String selection = TablesController.Mieszkanie.COLUMN_NAME_HOME_ID + " = ?";
+
+        String[] selectionArgs = {Long.toString(foreign_id)};
+
+        Cursor cursor = db.query(
+                TablesController.Mieszkanie.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                TablesController.Mieszkanie.COLUMN_NAME_NUMBER
+        );
+
+        List<TablesController.Flat> flats = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Mieszkanie._ID));
+            String number = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Mieszkanie.COLUMN_NAME_NUMBER));
+
+            flats.add(new TablesController.Flat(id, number, foreign_id));
+        }
+        cursor.close();
+
+        return flats;
+    }
 }

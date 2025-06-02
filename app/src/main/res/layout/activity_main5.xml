@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#595959">
+
+    <LinearLayout         android:id="@+id/main"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity5">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:background="#808f85"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:text="Mieszkania" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/margin_radius"
+                android:padding="15dp"
+                >
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:textSize="25dp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"
+                    android:text="Dodaj nowe mieszkanie"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/CreationFeedback"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:textSize="18dp"
+                    android:textColor="#DB0909"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"
+                    android:text="Numer mieszkania:" />
+
+                <EditText
+                    android:id="@+id/flatNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:hint="Numer mieszkania" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/createFlat"
+                        android:layout_width="200sp"
+                        android:layout_height="50dp"
+                        android:text="Utwórz"
+                        android:textColor="#dce0d9"
+                        android:textSize="18dp"
+                        android:backgroundTint="#520834"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:layout_height="wrap_content"
+            android:text="Utworzone mieszkania"
+            android:layout_marginTop="30dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:id="@+id/flats">
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
