@@ -4,93 +4,214 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#595959">
+    android:background="#595959"
+    tools:context=".MainActivity"> <!-- Keep tools:context for the merged activity -->
 
     <LinearLayout
-        android:id="@+id/main3"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".MainActivity">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textViewMieszkanie"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:gravity="center"
-            android:background="#808f85"
-            android:textSize="20dp"
-            android:textColor="@color/white"
-            android:text="Blok xyz/123" />
-
+        <!-- MAIN3 SECTION -->
         <LinearLayout
+            android:id="@+id/main3"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/textViewMieszkanie"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:gravity="center"
+                android:background="#808f85"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:text="Blok xyz/123" />
 
             <LinearLayout
-                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/margin_radius"
-                android:padding="15dp">
-
-                <TextView
-                    android:id="@+id/textViewZdjecia"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Dodaj mieszkania"
-                    android:textSize="25dp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
-                <!-- Updated Horizontal Scroll for Images -->
-                <LinearLayout
-                    android:id="@+id/imageContainer"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    />
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <LinearLayout
+                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:background="@drawable/margin_radius"
+                    android:padding="15dp">
 
-                    <Button
-                        android:id="@+id/addPhoto"
+                    <TextView
+                        android:id="@+id/textViewZdjecia_main3"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="Dodaj zdjęcie"
-                        android:textColor="#dce0d9"
-                        android:textSize="18dp"
-                        android:backgroundTint="#520834" />
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Dodaj mieszkania"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp" />
 
-                    <Button
-                        android:id="@+id/deletePhoto"
+                    <!-- Updated Horizontal Scroll for Images -->
+                    <LinearLayout
+                        android:id="@+id/imageContainer_main3"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="Usun zdjęcie"
-                        android:textColor="#dce0d9"
-                        android:textSize="18dp"
-                        android:backgroundTint="#520834" />
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/addPhoto_main3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="Dodaj zdjęcie"
+                            android:textColor="#dce0d9"
+                            android:textSize="18sp"
+                            android:backgroundTint="#520834" />
+
+                        <Button
+                            android:id="@+id/deletePhoto_main3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="Usuń zdjęcie"
+                            android:textColor="#dce0d9"
+                            android:textSize="18sp"
+                            android:backgroundTint="#520834" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- MAIN6 SECTION -->
+        <LinearLayout
+            android:id="@+id/main6"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/textViewPokoje_main6"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:gravity="center"
+                android:background="#808f85"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:text="Mieszkanie xyz/123" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/margin_radius"
+                    android:padding="15dp">
+
+                    <!-- RadioGroup for room types -->
+                    <RadioGroup
+                        android:id="@+id/roomTypeGroup_main6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <RadioButton
+                            android:id="@+id/radioKuchnia_main6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kuchnia" />
+
+                        <RadioButton
+                            android:id="@+id/radioLazienka_main6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Łazienka" />
+
+                        <RadioButton
+                            android:id="@+id/radioPokoj_main6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pokój"
+                            android:checked="true" />
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/textViewZdjecia_main6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Dodaj pokój"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp" />
+
+                    <!-- Updated Horizontal Scroll for Images -->
+                    <LinearLayout
+                        android:id="@+id/imageContainer_main6"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/addRoom_main6"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="Dodaj Pokój"
+                            android:textColor="#dce0d9"
+                            android:textSize="18sp"
+                            android:backgroundTint="#520834" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/Pokoje_main6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/margin_radius"
+                android:padding="15dp"
+                android:orientation="vertical"
+                android:visibility="gone"> <!-- make it initially invisible -->
+                <!-- Dynamic content can be added here -->
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
+
 </ScrollView>
