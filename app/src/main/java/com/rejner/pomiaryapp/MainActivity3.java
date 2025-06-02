@@ -13,8 +13,12 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -36,30 +40,45 @@ import java.util.Set;
 
 public class MainActivity3 extends AppCompatActivity {
 
+    // Constants and fields for photo capture and image management
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private Uri photoURI;
     private String currentPhotoPath;
     private Set<Integer> selectedImageIds = new HashSet<>();
-    private LinearLayout imageContainer;
+    private LinearLayout imageContainer;  // For Main3 images
+
+    // Fields for Main6 functionality (rooms)
+    private LinearLayout pokoje;
+    private Button addRoomButton;
+    private RadioGroup roomTypeGroup;
+    private int textViewCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_main3); // or a combined layout if you have one
 
-        DatabaseController dbHelper = new DatabaseController(this);
+        // Initialize views for Main3 section
+        Button captureButton = findViewById(R.id.addPhoto_main3);
+        Button deleteButton = findViewById(R.id.deletePhoto_main3);
+        imageContainer = findViewById(R.id.imageContainer_main3);
 
-        Button captureButton = findViewById(R.id.addPhoto);
-        Button deleteButton = findViewById(R.id.deletePhoto);
-        imageContainer = findViewById(R.id.imageContainer);
+        // Initialize views for Main6 section
+        pokoje = findViewById(R.id.Pokoje_main6);
+        addRoomButton = findViewById(R.id.addRoom_main6);
+        roomTypeGroup = findViewById(R.id.roomTypeGroup_main6);
 
+        // Set up Main3 listeners
         captureButton.setOnClickListener(view -> dispatchTakePictureIntent());
+        deleteButton.setOnClickListener(view -> deleteSelectedImages(new DatabaseController(this)));
+        loadImagesFromDatabase(new DatabaseController(this));
 
-        loadImagesFromDatabase(dbHelper);
-
-        deleteButton.setOnClickListener(view -> deleteSelectedImages(dbHelper));
+        // Set up Main6 listeners
+        addRoomButton.setOnClickListener(view -> addRoom());
     }
+
+    // ----- Main3 Methods (Image capture and display) -----
 
     private void loadImagesFromDatabase(DatabaseController dbHelper) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -84,7 +103,6 @@ public class MainActivity3 extends AppCompatActivity {
         cursor.close();
         db.close();
     }
-
 
     private void addImageToLayout(Bitmap bitmap, int id) {
         ImageView imageView = new ImageView(this);
@@ -153,7 +171,6 @@ public class MainActivity3 extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // currentPhotoPath is String path, use it directly
             if (currentPhotoPath != null) {
                 saveImageToDatabase(currentPhotoPath);
                 Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
@@ -166,7 +183,6 @@ public class MainActivity3 extends AppCompatActivity {
         }
     }
 
-
     private void saveImageToDatabase(String imagePath) {
         DatabaseController dbHelper = new DatabaseController(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -176,7 +192,6 @@ public class MainActivity3 extends AppCompatActivity {
         db.insert(TablesController.Zdjecia.TABLE_NAME, null, values);
         db.close();
     }
-
 
     private int getLastInsertedId() {
         DatabaseController dbHelper = new DatabaseController(this);
@@ -189,12 +204,6 @@ public class MainActivity3 extends AppCompatActivity {
         cursor.close();
         db.close();
         return id;
-    }
-
-    private byte[] bitmapToBytes(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        return stream.toByteArray();
     }
 
     private void deleteSelectedImages(DatabaseController dbHelper) {
@@ -218,7 +227,7 @@ public class MainActivity3 extends AppCompatActivity {
                         if (file.exists()) {
                             boolean deleted = file.delete();
                             if (!deleted) {
-                                Log.w("MainActivity3", "Failed to delete file: " + imagePath);
+                                Log.w("MainActivityMerged", "Failed to delete file: " + imagePath);
                             }
                         }
                     }
@@ -229,7 +238,6 @@ public class MainActivity3 extends AppCompatActivity {
             }
         }
 
-        // Remove views from layout after loop
         for (View view : viewsToRemove) {
             imageContainer.removeView(view);
         }
@@ -238,9 +246,6 @@ public class MainActivity3 extends AppCompatActivity {
         db.close();
     }
 
-
-
-    // Helper method to get image path by ID
     private String getImagePathById(SQLiteDatabase db, int id) {
         String imagePath = null;
         Cursor cursor = db.query(
@@ -266,6 +271,112 @@ public class MainActivity3 extends AppCompatActivity {
         fullImageView.setAdjustViewBounds(true);
         builder.setView(fullImageView);
         builder.setPositiveButton("Close", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    // ----- Main6 Methods (Rooms with sockets etc) -----
+
+    private void addRoom() {
+        textViewCount++;
+
+        // Get selected room type from RadioGroup
+        int selectedId = roomTypeGroup.getCheckedRadioButtonId();
+        String roomType = "Pokój"; // default
+        if (selectedId == R.id.radioKuchnia_main6) {
+            roomType = "Kuchnia";
+        } else if (selectedId == R.id.radioLazienka_main6) {
+            roomType = "Łazienka";
+        } else if (selectedId == R.id.radioPokoj_main6) {
+            roomType = "Pokój";
+        }
+
+        // Container layout for this room
+        LinearLayout roomLayout = new LinearLayout(this);
+        roomLayout.setOrientation(LinearLayout.VERTICAL);
+        roomLayout.setPadding(0, 20, 0, 20);
+
+        // Horizontal layout for title + delete button
+        LinearLayout titleLayout = new LinearLayout(this);
+        titleLayout.setOrientation(LinearLayout.HORIZONTAL);
+        titleLayout.setPadding(0, 10, 0, 10);
+        titleLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        // TextView for room title + number
+        TextView roomTitleTextView = new TextView(this);
+        roomTitleTextView.setText(roomType + " " + textViewCount);
+        roomTitleTextView.setTextSize(18);
+        roomTitleTextView.setLayoutParams(new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)); // fill remaining space
+        titleLayout.addView(roomTitleTextView);
+
+        // Delete button for this room
+        Button deleteButton = new Button(this);
+        deleteButton.setText("Usuń");
+        deleteButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        titleLayout.addView(deleteButton);
+
+        roomLayout.addView(titleLayout);
+
+        // TextView to accumulate socket info
+        TextView gniazdkoInfoTextView = new TextView(this);
+        gniazdkoInfoTextView.setTextSize(16);
+        gniazdkoInfoTextView.setPadding(0, 10, 0, 10);
+        roomLayout.addView(gniazdkoInfoTextView);
+
+        // Add roomLayout to main container
+        pokoje.addView(roomLayout);
+
+        // Delete button logic
+        deleteButton.setOnClickListener(v -> pokoje.removeView(roomLayout));
+
+        // Show dialog to input socket info (reuse logic from MainActivity6)
+        showSocketInfoDialog(gniazdkoInfoTextView);
+    }
+
+    private void showSocketInfoDialog(TextView gniazdkoInfoTextView) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Dodaj gniazdko");
+
+        // Create layout for dialog inputs
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(30, 20, 30, 20);
+
+        EditText editTextTypGniazdka = new EditText(this);
+        editTextTypGniazdka.setHint("Typ gniazdka");
+        layout.addView(editTextTypGniazdka);
+
+        EditText editTextLiczba = new EditText(this);
+        editTextLiczba.setHint("Liczba");
+        editTextLiczba.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        layout.addView(editTextLiczba);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Dodaj", (dialog, which) -> {
+            String typGniazdka = editTextTypGniazdka.getText().toString().trim();
+            String liczbaStr = editTextLiczba.getText().toString().trim();
+
+            if (!typGniazdka.isEmpty() && !liczbaStr.isEmpty()) {
+                try {
+                    int liczba = Integer.parseInt(liczbaStr);
+                    String existingText = gniazdkoInfoTextView.getText().toString();
+                    String newText = existingText + typGniazdka + ": " + liczba + "\n";
+                    gniazdkoInfoTextView.setText(newText);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Liczba musi być liczbą całkowitą", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Wypełnij oba pola", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Anuluj", (dialog, which) -> dialog.cancel());
+
         builder.show();
     }
 }
