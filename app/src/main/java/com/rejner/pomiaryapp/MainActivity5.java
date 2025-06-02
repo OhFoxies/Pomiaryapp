@@ -37,9 +37,10 @@ public class MainActivity5 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText flatNumber = findViewById(R.id.MeasurementName);
+                EditText flatNumber = findViewById(R.id.flatNum);
                 if (flatNumber.getText().toString().isEmpty()) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
+                    errorView.setTextColor(Color.rgb(219, 9, 9));
                     errorView.setText("Nie podano numeru mieszkania");
                 } else if (dbHelper.doesMeasurementExist(flatNumber.getText().toString())) {
                     TextView errorView = findViewById(R.id.CreationFeedback);

@@ -37,36 +37,28 @@ public class MainActivity4 extends AppCompatActivity {
         int measurementId = intent.getIntExtra("measurementId", 0);
         String measurementName = intent.getStringExtra("measurementName");
 
-
-
         DatabaseController dbHelper = new DatabaseController(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-//        TablesController.Pomiar measurement = dbHelper.getMeasurementByID(id);
-
         TextView titleView = findViewById(R.id.title);
         titleView.setText("Pomiar: " + measurementName);
-
 
 
         this.reloadHomes();
 
         Button button = findViewById(R.id.createHome);
-        Log.e("siur", "1");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText street = findViewById(R.id.City);
                 EditText city = findViewById(R.id.Street);
                 EditText number = findViewById(R.id.Number);
-                Log.e("siur", "2");
 
                 if (street.getText().toString().isEmpty() || city.getText().toString().isEmpty() || number.getText().toString().isEmpty()) {
                     TextView errorView = findViewById(R.id.CreationFeedback);
+                    errorView.setTextColor(Color.rgb(219, 9, 9));
                     errorView.setText("Nie podano wszystkich danych");
-                    Log.e("siur", "4");
 
                 } else {
-                    Log.e("siur", "3");
 
                     ContentValues values = new ContentValues();
                     street.clearFocus();
@@ -88,7 +80,6 @@ public class MainActivity4 extends AppCompatActivity {
                     db.insert(TablesController.Bloki.TABLE_NAME, null, values);
                     reloadHomes();
                 }
-                Log.e("siur", "5");
 
             }
 
