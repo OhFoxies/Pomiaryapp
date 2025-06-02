@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#595959">
+
+    <LinearLayout
+        android:id="@+id/main6"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity6">
+
+        <TextView
+            android:id="@+id/textViewPokoje"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:background="#808f85"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:text="Mieszkanie xyz/123" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/margin_radius"
+                android:padding="15dp">
+
+                <!-- RadioGroup for room types -->
+                <RadioGroup
+                    android:id="@+id/roomTypeGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <RadioButton
+                        android:id="@+id/radioKuchnia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kuchnia" />
+
+                    <RadioButton
+                        android:id="@+id/radioLazienka"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Łazienka" />
+
+                    <RadioButton
+                        android:id="@+id/radioPokoj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pokój"
+                        android:checked="true" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/textViewZdjecia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Dodaj pokój"
+                    android:textSize="25dp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <!-- Updated Horizontal Scroll for Images -->
+                <LinearLayout
+                    android:id="@+id/imageContainer"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/addRoom"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="Dodaj Pokój"
+                        android:textColor="#dce0d9"
+                        android:textSize="18dp"
+                        android:backgroundTint="#520834" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Pokoje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/margin_radius"
+            android:padding="15dp"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
