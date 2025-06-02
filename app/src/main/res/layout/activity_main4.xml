@@ -43,47 +43,20 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:gravity="center"
-                    android:text="Dodaj blok/dom"
+                    android:text="Dodaj blok"
                     android:textColor="@color/black"
                     android:textSize="25dp" />
 
                 <TextView
                     android:id="@+id/CreationFeedback"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
                     android:gravity="center"
-                    android:text=""
-                    android:textColor="#d60909"
-                    android:textSize="18dp" />
-
-                <RadioGroup
-                    android:layout_width="match_parent"
+                    android:textSize="18dp"
+                    android:textColor="#DB0909"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="60dp"
-                    android:paddingEnd="60dp">
-
-                    <RadioButton
-                        android:id="@+id/radioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Blok"
-                        android:textSize="20sp" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dom"
-                        android:textSize="20sp" />
-                </RadioGroup>
+                    android:text=""
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
 
 
                 <TextView
@@ -144,7 +117,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/createMeasurement"
+                        android:id="@+id/createHome"
                         android:layout_width="200sp"
                         android:layout_height="50dp"
                         android:backgroundTint="#520834"
@@ -165,14 +138,14 @@
             android:textColor="@color/black"
             android:textSize="24dp"
             android:layout_height="wrap_content"
-            android:text="Utworzone pomiary"
+            android:text="Utworzone bloki"
             android:layout_marginTop="30dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp"
-            android:id="@+id/measurements">
+            android:id="@+id/homes">
 
         </LinearLayout>
     </LinearLayout>

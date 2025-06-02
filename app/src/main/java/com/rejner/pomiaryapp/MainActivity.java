@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
             Button button = itemView.findViewById(R.id.showButton);
             Button delete = itemView.findViewById(R.id.deleteButton);
 
-            nameText.setText(p.name);
+            nameText.setText(p.name + p.id);
             dateText.setText(p.date);
-            Log.d("Measurement", "Name: " + p.name + ", Date: " + p.date);
 
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(this, MainActivity4.class);
-                intent.putExtra("measurement", p.id);
+                intent.putExtra("measurementId", p.id);
+                intent.putExtra("measurementName", p.name);
 
                 startActivity(intent);
             });

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -191,12 +192,14 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         db.close();
     }
-    public TablesController.Pomiar getMeasurementByID(int id) {
+
+    public TablesController.Pomiar getMeasurementByID(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = {
                 BaseColumns._ID,
                 TablesController.Pomiary.COLUMN_NAME_NAME,
+                TablesController.Pomiary.COLUMN_NAME_DATE
         };
 
         String selection = TablesController.Pomiary._ID + " = ?";
@@ -212,11 +215,20 @@ public class DatabaseController extends SQLiteOpenHelper {
                 null
         );
 
-        long id_ = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Pomiary._ID));
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
-        String date = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_DATE));
-        cursor.close();
-        return new TablesController.Pomiar(id_, name, date);
+        TablesController.Pomiar result = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            long id_ = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
+            String date = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_DATE));
+            result = new TablesController.Pomiar(id_, name, date);
+        } else {
+            Log.e("DB_ERROR", "No measurement found for ID: " + id);
+        }
+
+        if (cursor != null) cursor.close();
+
+        return result;
     }
 
     public List<TablesController.Home> getAllHomes() {
@@ -232,25 +244,27 @@ public class DatabaseController extends SQLiteOpenHelper {
 
 
         Cursor cursor = db.query(
-                TablesController.Pomiary.TABLE_NAME,
+                TablesController.Bloki.TABLE_NAME,
                 projection,
                 null,
                 null,
                 null,
                 null,
-                TablesController.Pomiary.COLUMN_NAME_DATE
+                null
         );
 
-        List<TablesController.Pomiar> measurements = new ArrayList<>();
+        List<TablesController.Home> homes = new ArrayList<>();
         while(cursor.moveToNext()) {
-            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Pomiary._ID));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_NAME));
-            String date = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Pomiary.COLUMN_NAME_DATE));
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Bloki._ID));
+            long measurement_id = cursor.getLong(cursor.getColumnIndexOrThrow(TablesController.Bloki.COLUMN_NAME_ID_MEASUREMENT));
+            String street = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Bloki.COLUMN_NAME_STREET));
+            String number = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Bloki.COLUMN_NAME_NUMBER));
+            String city = cursor.getString(cursor.getColumnIndexOrThrow(TablesController.Bloki.COLUMN_NAME_CITY));
 
-            measurements.add(new TablesController.Pomiar(id, name, date));
+            homes.add(new TablesController.Home(id, measurement_id, street, city, number));
         }
         cursor.close();
 
-        return measurements;
+        return homes;
     }
 }
