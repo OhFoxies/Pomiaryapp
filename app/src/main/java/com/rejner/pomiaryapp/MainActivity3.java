@@ -321,11 +321,21 @@ public class MainActivity3 extends AppCompatActivity {
 
         roomLayout.addView(titleLayout);
 
-        // TextView to accumulate socket info
-        TextView gniazdkoInfoTextView = new TextView(this);
-        gniazdkoInfoTextView.setTextSize(16);
-        gniazdkoInfoTextView.setPadding(0, 10, 0, 10);
-        roomLayout.addView(gniazdkoInfoTextView);
+        // TextView to display sockets info (initially empty)
+        TextView socketsTextView = new TextView(this);
+        socketsTextView.setTextSize(16);
+        socketsTextView.setPadding(0, 10, 0, 10);
+        roomLayout.addView(socketsTextView);
+
+        // EditText for entering new socket info
+        EditText socketInputEditText = new EditText(this);
+        socketInputEditText.setHint("Wpisz dane gniazdka");
+        roomLayout.addView(socketInputEditText);
+
+        // Button to add new socket info
+        Button addSocketButton = new Button(this);
+        addSocketButton.setText("Dodaj gniazdko");
+        roomLayout.addView(addSocketButton);
 
         // Add roomLayout to main container
         pokoje.addView(roomLayout);
@@ -333,8 +343,29 @@ public class MainActivity3 extends AppCompatActivity {
         // Delete button logic
         deleteButton.setOnClickListener(v -> pokoje.removeView(roomLayout));
 
-        // Show dialog to input socket info (reuse logic from MainActivity6)
-        showSocketInfoDialog(gniazdkoInfoTextView);
+        // Add socket button logic
+        addSocketButton.setOnClickListener(v -> {
+            String newSocketData = socketInputEditText.getText().toString().trim();
+            if (!newSocketData.isEmpty()) {
+                appendSocketInfo(socketsTextView, newSocketData);
+                socketInputEditText.setText("");
+            } else {
+                Toast.makeText(this, "Wpisz dane gniazdka", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void appendSocketInfo(TextView socketsTextView, String newSocketData) {
+        String currentText = socketsTextView.getText().toString().trim();
+        int count = 0;
+        if (!currentText.isEmpty()) {
+            // Count existing lines to number the new socket correctly
+            count = currentText.split("\n").length;
+        }
+        int newSocketNumber = count + 1;
+        String appendedText = currentText.isEmpty() ?
+                "Gniazdko " + newSocketNumber + ": " + newSocketData :
+                currentText + "\nGniazdko " + newSocketNumber + ": " + newSocketData;
+        socketsTextView.setText(appendedText);
     }
 
     private void showSocketInfoDialog(TextView gniazdkoInfoTextView) {
