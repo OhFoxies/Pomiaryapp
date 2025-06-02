@@ -277,6 +277,11 @@ public class MainActivity3 extends AppCompatActivity {
     // ----- Main6 Methods (Rooms with sockets etc) -----
 
     private void addRoom() {
+        // Show Pokoje_main6 container if hidden
+        if (pokoje.getVisibility() == View.GONE) {
+            pokoje.setVisibility(View.VISIBLE);
+        }
+
         textViewCount++;
 
         // Get selected room type from RadioGroup
@@ -290,12 +295,21 @@ public class MainActivity3 extends AppCompatActivity {
             roomType = "Pokój";
         }
 
-        // Container layout for this room
+        // Create container for the room (vertical)
         LinearLayout roomLayout = new LinearLayout(this);
         roomLayout.setOrientation(LinearLayout.VERTICAL);
         roomLayout.setPadding(0, 20, 0, 20);
 
-        // Horizontal layout for title + delete button
+        // Add horizontal black line separator if this is not the first room
+        if (pokoje.getChildCount() > 0) {
+            View separator = new View(this);
+            separator.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 2));
+            separator.setBackgroundColor(0xFF000000); // black line
+            pokoje.addView(separator);
+        }
+
+        // Title layout with room name and delete button
         LinearLayout titleLayout = new LinearLayout(this);
         titleLayout.setOrientation(LinearLayout.HORIZONTAL);
         titleLayout.setPadding(0, 10, 0, 10);
@@ -303,7 +317,6 @@ public class MainActivity3 extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        // TextView for room title + number
         TextView roomTitleTextView = new TextView(this);
         roomTitleTextView.setText(roomType + " " + textViewCount);
         roomTitleTextView.setTextSize(18);
@@ -311,46 +324,91 @@ public class MainActivity3 extends AppCompatActivity {
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)); // fill remaining space
         titleLayout.addView(roomTitleTextView);
 
-        // Delete button for this room
-        Button deleteButton = new Button(this);
-        deleteButton.setText("Usuń");
-        deleteButton.setLayoutParams(new LinearLayout.LayoutParams(
+        Button deleteRoomButton = new Button(this);
+        deleteRoomButton.setText("Usuń");
+        deleteRoomButton.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        titleLayout.addView(deleteButton);
+        titleLayout.addView(deleteRoomButton);
 
         roomLayout.addView(titleLayout);
 
-        // TextView to display sockets info (initially empty)
-        TextView socketsTextView = new TextView(this);
-        socketsTextView.setTextSize(16);
-        socketsTextView.setPadding(0, 10, 0, 10);
-        roomLayout.addView(socketsTextView);
+        // Container for sockets: vertical layout
+        LinearLayout socketsContainer = new LinearLayout(this);
+        socketsContainer.setOrientation(LinearLayout.VERTICAL);
+        socketsContainer.setPadding(10, 10, 10, 10);
+        roomLayout.addView(socketsContainer);
 
-        // EditText for entering new socket info
+        // EditText to input new socket info
         EditText socketInputEditText = new EditText(this);
-        socketInputEditText.setHint("Wpisz dane gniazdka");
+        socketInputEditText.setHint("Wpisz informacje o gniazdku");
         roomLayout.addView(socketInputEditText);
 
-        // Button to add new socket info
+        // Button to add socket info
         Button addSocketButton = new Button(this);
         addSocketButton.setText("Dodaj gniazdko");
         roomLayout.addView(addSocketButton);
 
-        // Add roomLayout to main container
         pokoje.addView(roomLayout);
 
-        // Delete button logic
-        deleteButton.setOnClickListener(v -> pokoje.removeView(roomLayout));
+        // Keep track of socket count per room
+        final int[] socketCount = {0};
 
         // Add socket button logic
         addSocketButton.setOnClickListener(v -> {
-            String newSocketData = socketInputEditText.getText().toString().trim();
-            if (!newSocketData.isEmpty()) {
-                appendSocketInfo(socketsTextView, newSocketData);
-                socketInputEditText.setText("");
-            } else {
-                Toast.makeText(this, "Wpisz dane gniazdka", Toast.LENGTH_SHORT).show();
+            String socketInfo = socketInputEditText.getText().toString().trim();
+            if (socketInfo.isEmpty()) {
+                Toast.makeText(this, "Wpisz informacje o gniazdku", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            socketCount[0]++;
+            String label = "Gniazdko " + socketCount[0] + ": " + socketInfo;
+
+            // Create a horizontal layout for this socket line + delete button
+            LinearLayout socketLineLayout = new LinearLayout(this);
+            socketLineLayout.setOrientation(LinearLayout.HORIZONTAL);
+            socketLineLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            socketLineLayout.setPadding(0, 5, 0, 5);
+
+            // TextView for socket info
+            TextView socketTextView = new TextView(this);
+            socketTextView.setText(label);
+            socketTextView.setLayoutParams(new LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            socketLineLayout.addView(socketTextView);
+
+            // Delete button for this socket
+            Button deleteSocketButton = new Button(this);
+            deleteSocketButton.setText("X");
+            deleteSocketButton.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            socketLineLayout.addView(deleteSocketButton);
+
+            // Add socket line layout to sockets container
+            socketsContainer.addView(socketLineLayout);
+
+            // Clear input
+            socketInputEditText.setText("");
+
+            // Delete socket button logic
+            deleteSocketButton.setOnClickListener(delView -> {
+                socketsContainer.removeView(socketLineLayout);
+                // Optional: Adjust socket numbering if you want
+                // For simplicity, we won't re-number sockets here
+            });
+        });
+
+        // Delete room button logic
+        deleteRoomButton.setOnClickListener(v -> {
+            pokoje.removeView(roomLayout);
+            // Hide container if no rooms remain
+            if (pokoje.getChildCount() == 0) {
+                pokoje.setVisibility(View.GONE);
             }
         });
     }

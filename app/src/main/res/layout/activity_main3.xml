@@ -206,7 +206,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/margin_radius"
                 android:padding="15dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone"> <!-- make it initially invisible -->
                 <!-- Dynamic content can be added here -->
             </LinearLayout>
 
